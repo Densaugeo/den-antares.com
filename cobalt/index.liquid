@@ -1,25 +1,22 @@
 ---
 layout: default.liquid
+title: Den Antares
 ---
-<h2> Blog! </h2>
-
-Test putting a description here
-
-# Test if md is diabled
-
-~~~
-Test if md is diabled
-~~~
-
-Reload test 3sdfsdfg again and again
-
-aaaaaaaaaaaaaaaaaa
-
-
-234
+<div class="button_well">
+  <p>My personal web site where I fully intend to put some things.</p>
+</div>
 
 {% for post in collections.posts.pages %}
-<h4> {{ post.title }} </h4>
-
-<a href="{{ post.permalink }}"> {{ post.title }} </a>
+<div class="button_panel">
+  <h4>
+    <a href="/{{ post.permalink }}">{{ post.title }}</a>
+  </h4>
+  <text style="color:#ccc">
+    Den Antares - {{ post.published_date | date: "%d %b %Y" }}
+  </text>
+  <div class="button_panel_body">
+    <!-- post.tags -->
+    {{ post.content }}
+  </div>
+</div>
 {% endfor %}

@@ -1,5 +1,5 @@
 source: cobalt
-destination: static
+destination: cobalt-build
 site:
   title: cobalt blog
   description: Blog Posts Go Here
