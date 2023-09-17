@@ -1,0 +1,26 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+
+<title>{{ page.title }}</title>
+
+<script type="text/javascript">
+// Frame buster
+if(top !== self) top.location.replace(self.location.href)
+
+// Add CSS class for highlighting current tab in nav bar
+window.addEventListener('load', () => {
+  let nav = document.querySelector('nav')
+  
+  for(let element of nav.children) {
+    if(window.location == element.href) {
+      element.classList.add('active')
+    }
+  }
+  
+  if(window.location.pathname == '/') {
+    nav.children[0].classList.add('active')
+  }
+}, { once: true })
+</script>
+
+<link href="/buttonui.css" rel="stylesheet" />

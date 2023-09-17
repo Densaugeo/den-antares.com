@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% include "head.liquid" %}
+</head>
+
+<body>
+{% include "navbar.liquid" %}
+
+<div class="button_panel">
+  <h4>
+    <a href="/{{ page.permalink }}">{{ page.title }}</a>
+  </h4>
+  <text style="color:#ccc">
+    Den Antares - {{ page.published_date | date: "%d %b %Y" }}
+  </text>
+  <div class="button_panel_body">
+    {{ page.content }}
+  </div>
+</div>
+</body>
+</script>
+</html>
