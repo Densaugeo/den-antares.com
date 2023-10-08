@@ -1,7 +1,12 @@
 <meta charset="utf-8">
 <meta name="color-scheme" content="dark">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<!-- Media queries for favicons currently don't work in FF but they have a
+     ticket for it: https://bugzilla.mozilla.org/show_bug.cgi?id=1790109 -->
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32-dark.png"
+  media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32-light.png"
+  media="(prefers-color-scheme: light)">
 
 <title>{{ page.title }}</title>
 
