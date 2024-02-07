@@ -1,0 +1,46 @@
+---
+layout: default.liquid
+title: Den's Castle
+---
+<script type="importmap">
+{
+  "imports": {
+    "three": "/castle/three/three.module.js"
+  }
+}
+</script>
+
+<script type="text/javascript" src="/castle/EventEmitter.min.js"></script>
+
+<style>
+html, body, lego-castle {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  
+  margin: 0;
+  border: none;
+  padding: 0;
+}
+</style>
+
+<lego-castle></lego-castle>
+
+<script type="module">
+import * as index from '/castle/castle.js'
+for(const key in index) window[key] = index[key]
+
+window.lego_castle = document.getElementsByTagName('lego-castle')[0]
+
+// WebGL occupies entire browser window
+function resizer() {
+  const navbar_height = document.querySelector('nav').offsetHeight
+  lego_castle.style.top = navbar_height + 'px'
+  lego_castle.width  = window.innerWidth
+  lego_castle.height = window.innerHeight - navbar_height
+}
+window.addEventListener('resize', resizer)
+resizer()
+</script>
