@@ -10,8 +10,6 @@ title: Den's Castle
 }
 </script>
 
-<script type="text/javascript" src="/castle/EventEmitter.min.js"></script>
-
 <style>
 html, body, lego-castle {
   position: absolute;
@@ -23,8 +21,26 @@ html, body, lego-castle {
   margin: 0;
   border: none;
   padding: 0;
+  
+  /* In Chrome, overflows can occur due to Chrome storing viewport sizes as a
+  float internally, but reporting them rounded to the nearest integer. On
+  screens with resolution scaling this can cause overflows in situations where
+  the viewport size has been rounded up */
+  overflow: hidden;
 }
 </style>
+
+<script>
+EventTarget.prototype.on = EventTarget.prototype.addEventListener
+
+EventTarget.prototype.emit = function emit(type, properties) {
+  const e = new Event(type)
+  for(key in properties) {
+    e[key] = properties[key]
+  }
+  this.dispatchEvent(e)
+}
+</script>
 
 <lego-castle></lego-castle>
 
