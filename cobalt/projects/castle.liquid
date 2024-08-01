@@ -32,6 +32,7 @@ html, body, lego-castle {
 
 <script>
 EventTarget.prototype.on = EventTarget.prototype.addEventListener
+EventTarget.prototype.off = EventTarget.prototype.removeEventListener
 
 EventTarget.prototype.emit = function emit(type, properties) {
   const e = new Event(type)
@@ -49,6 +50,7 @@ import * as index from '/castle/castle.js'
 for(const key in index) window[key] = index[key]
 
 window.lego_castle = document.getElementsByTagName('lego-castle')[0]
+lego_castle.focus()
 
 // WebGL occupies entire browser window
 function resizer() {
