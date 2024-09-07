@@ -1,0 +1,39 @@
+---
+title: First Paraforge Test Release
+published_date: 2024-09-02 19:00:00.801888762 +0000
+layout: post.liquid
+is_draft: false
+---
+<script type="importmap">
+{
+  "imports": {
+    "paraforge.viewer": "/node_modules/paraforge/viewer.js",
+    "three": "/node_modules/three/build/three.module.js",
+    "three.GLTFLoader": "/node_modules/three/examples/jsm/loaders/GLTFLoader.js"
+  }
+}
+</script>
+
+<p><paraforge-viewer></paraforge-viewer></p>
+
+<p>I have published the first semi-functional versions of <a href="/projects/paraforge.html">Paraforge</a> to npm! (0.1.0 was published on 2 Sep 2024.) This is the very first test model that I used for most of the early development.</p>
+
+<script type="module">
+import * as paraforge_viewer from 'paraforge.viewer'
+for(let key in paraforge_viewer) window[key] = paraforge_viewer[key]
+
+window.viewer = document.getElementsByTagName('paraforge-viewer')[0]
+
+// Put stuff in scene
+await viewer.init()
+await viewer.paraforge.add_file('/first_model.py',
+  '/paraforge-scripts/first_model.pf.py')
+await viewer.paraforge.gen('first_model', 'first_model', [], {})
+await viewer.update_scene()
+
+function resizer() {
+  viewer.width = viewer.parentNode.offsetWidth + 'px'
+}
+window.addEventListener('resize', resizer)
+resizer()
+</script>
