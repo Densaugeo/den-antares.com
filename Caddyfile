@@ -1,0 +1,17 @@
+{
+	# Not necessary, I just don't like the admin API
+	admin off
+
+	# Required for Quest compatibility. If OCSP stapling is left on, serving videos to
+	# Quest may work for up to one week, but will then fail due to expiration issues.
+	# The OCSP bug can be confirmed by leaving OCSP stapling on, waiting 8 days, and
+	# then running `curl -v --cert-status https://HOSTNAME/``, which will end with
+	# the error `curl: (91) OCSP response has expired`.
+	ocsp_stapling off
+}
+
+den-antares.com {
+  file_server {
+    root /den-antares.com/cobalt-build
+  }
+}
