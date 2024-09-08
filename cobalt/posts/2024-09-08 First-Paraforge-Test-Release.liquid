@@ -1,6 +1,6 @@
 ---
 title: First Paraforge Test Release
-published_date: 2024-09-02 19:00:00.801888762 +0000
+published_date: 2024-09-08 17:01:00.801888762 +0000
 layout: post.liquid
 is_draft: false
 ---
@@ -14,9 +14,12 @@ is_draft: false
 }
 </script>
 
-<p><paraforge-viewer></paraforge-viewer></p>
+<paraforge-viewer></paraforge-viewer>
 
 <p>I have published the first semi-functional versions of <a href="/projects/paraforge.html">Paraforge</a> to npm! (0.1.0 was published on 2 Sep 2024.) This is the very first test model that I used for most of the early development.</p>
+
+<!-- Needed for edge cases involving document flow around floated elements -->
+<div style="clear: both;"></div>
 
 <script type="module">
 import * as paraforge_viewer from 'paraforge.viewer'
@@ -32,7 +35,9 @@ await viewer.paraforge.gen('first_model', 'first_model', [], {})
 await viewer.update_scene()
 
 function resizer() {
-  viewer.width = viewer.parentNode.offsetWidth + 'px'
+  const width = Math.min(viewer.parentNode.offsetWidth - 32, 600)
+  viewer.width = width + 'px'
+  viewer.height = width/1.6 + 'px'
 }
 window.addEventListener('resize', resizer)
 resizer()

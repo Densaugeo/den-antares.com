@@ -127,6 +127,10 @@ body > div {
 .button_panel_body > figure > figcaption {
   color: #ccc;
 }
+.button_panel_body > paraforge-viewer {
+  float: left;
+  margin: 16px;
+}
 /**
  * Text wells
  * 

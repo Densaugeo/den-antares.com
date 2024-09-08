@@ -1,6 +1,9 @@
-install-dev:
+install:
 	cargo install cobalt-bin
 	npm install
+
+install-dev:
+	make install
 	python -m pip install reloadserver
 
 build:
