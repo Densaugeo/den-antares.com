@@ -1,4 +1,5 @@
 install-dev:
+	sudo dnf install inotify-tools
 	cargo install cobalt-bin
 	npm install
 	python -m pip install reloadserver
@@ -34,7 +35,7 @@ watch:
 		inotifywait --recursive --event modify --exclude .kate-swp cobalt; \
 	done
 
-serve: test.pem
+test-manual: test.pem
 	cd cobalt-build && python -m reloadserver -c ../test.pem
 
 test.pem:
