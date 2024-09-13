@@ -13,6 +13,7 @@ install-prod:
 	# want to automate
 	ssh den-antares.com "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y"
 	ssh den-antares.com "cargo install cobalt-bin"
+	ssh den-antares.com "mkdir /den-antares.com-scratch"
 	ssh den-antares.com "cd / && git clone https://github.com/Densaugeo/den-antares.com.git"
 	ssh den-antares.com "cd /den-antares.com && npm install"
 	ssh den-antares.com "mv /etc/caddy/Caddyfile /etc/caddy/Caddyfile-default"
@@ -27,6 +28,7 @@ build:
 	rm -rf cobalt-build/*
 	cobalt build
 	ln -s ../node_modules cobalt-build/node_modules
+	ln -s /den-antares.com-scratch cobalt-build/scratch
 	npm update
 
 watch:

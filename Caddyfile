@@ -11,7 +11,7 @@
 }
 
 den-antares.com {
-  file_server {
+  file_server browse {
     root /den-antares.com/cobalt-build
   }
 }
