@@ -115,6 +115,11 @@ body > div {
 .button_panel_body > p {
   margin: 16px;
 }
+.button_panel_body code {
+  padding: .125rem .25rem;
+  background: #404040b2;
+  font-weight: 500;
+}
 .button_panel_body > figure {
   float: left;
   margin: 16px;

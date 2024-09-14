@@ -17,6 +17,57 @@ title: Den's Projects
     <div style="clear: both;"></div>
   </div>
 </div>
+
+<div class="button_panel">
+  <h4>
+    <a href="https://github.com/densaugeo/uploadserver">Uploadserver</a>
+  </h4>
+  <div class="button_panel_body">
+    <p>Python's http.server extended to include a file upload page.</p>
+    
+    <p>I made uploadserver to help with transferring files in restrictive environments - by allowing both uploads and downloads over HTTP/S, you can transfer files over networks that block ssh, ftp, etc.. I've found it useful on school and corporate networks and for moving picture from my iPhone to Linux PCs.</p>
+    
+    <p>So far this is my most widely used project, passing 10k downloads/month sometime this summer.</p>
+    
+    <p>Available as a <a href="https://pypi.org/project/uploadserver/">Python package</a>. Documentation and code available on <a href="https://github.com/densaugeo/uploadserver">GitHub</a>.</p>
+  </div>
+</div>
+
+<div class="button_panel">
+  <h4>
+    <a href="https://github.com/densaugeo/reloadserver">Reloadserver</a>
+  </h4>
+  <div class="button_panel_body">
+    <p>HTTP(S) server with automatic refresh on file changes, based on Python's http.server.</p>
+    
+    <p>Why make yet another hot reload server? I couldn't get the existing ones to cooperate. I always have some problem with HTTPS (required for so many new web APIs, even in test environments), or with files I was trying to change reloading from cache and not reflecting my changes. The main features are:</p>
+    
+    <ul>
+      <li>Installs from pip.</li>
+      <li>Defaults that work well for me - Running <code>python -m reloadserver</code> servers the current directory and reloads if a file inside it changes.</li>
+      <li>HTTPS support - Necessary for testing browser gamepad support or WebAuthn.</li>
+      <li>Uses <code>location.reload()</code>'s forceGet option - Prevents caching in some cases (Mozilla browsers only).</li>
+    </ul>
+    
+    <p>I'm using it right now as I work on this web site!</p>
+    
+    <p>Available as a <a href="https://pypi.org/project/reloadserver/">Python package</a>. Documentation and code available on <a href="https://github.com/densaugeo/reloadserver">GitHub</a>.</p>
+  </div>
+</div>
+
+<div class="button_panel">
+  <h4>
+    <a href="https://github.com/Densaugeo/base64_arduino">Base64_arduino</a>
+  </h4>
+  <div class="button_panel_body">
+    <p>Base64 encoder/decoder for arduino repo.</p>
+    
+    <p>This is a small C++ library that I made as a learning project. Then I added it to the Arduino repo and other people started using it. I was as surprised as anyone!</p>
+    
+    <p>Documentation and code available on <a href="https://github.com/Densaugeo/base64_arduino">GitHub</a>.</p>
+  </div>
+</div>
+
 <div class="button_panel">
   <h4>
     <!--<a href="/projects/castle.html">-->Castle (Down for Updates)<!--</a>-->
