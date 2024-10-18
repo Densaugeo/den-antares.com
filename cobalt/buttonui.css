@@ -112,17 +112,18 @@ body > div {
   border-color: #0ff;
   background: rgba(0, 0, 0, 0.7);
 }
-.button_panel_body > p {
+.button_panel_body > * {
   margin: 16px;
 }
-.button_panel_body code {
+/* Bit of a hack: excluding children of <pre> is to prevent this rule from
+ * applying to syntax-highlighted code from markdown code blocks */
+.button_panel_body :not(pre) > code {
   padding: .125rem .25rem;
   background: #404040b2;
   font-weight: 500;
 }
 .button_panel_body > figure {
   float: left;
-  margin: 16px;
   max-width: 400px;
 }
 .button_panel_body > figure > img,
@@ -134,7 +135,12 @@ body > div {
 }
 .button_panel_body > paraforge-viewer {
   float: left;
-  margin: 16px;
+}
+.button_panel_body > pre {
+  /* !important overrides styling used by Cobalt's .md to .html conversion */
+  background: none !important;
+  max-width: 100%;
+  overflow: scroll;
 }
 /**
  * Text wells
@@ -149,6 +155,6 @@ body > div {
   background-image: linear-gradient(to bottom, rgba(96, 96, 96, 0.3) 0px, rgba(0, 0, 0, 0.3) 100%);
   box-shadow: 0px 0px 2px #fff inset;
 }
-.button_well > p {
+.button_well > * {
   margin: 16px;
 }
