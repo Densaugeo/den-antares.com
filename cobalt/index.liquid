@@ -16,7 +16,12 @@ title: Den Antares
   </text>
   <div class="button_panel_body">
     <!-- post.tags -->
-    {{ post.content }}
+    {{ post.excerpt }}
+    <!-- For edge cases involving document flow around floated elements -->
+    <div style="clear: both;"></div>
+    <a href="/{{ post.permalink }}">Continue reading...</a>
+    <!-- So border is properly spaced below continue reading... link -->
+    <div></div>
   </div>
 </div>
 {% endfor %}
