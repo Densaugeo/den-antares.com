@@ -29,7 +29,7 @@ build:
 	cobalt build
 	ln -s ../node_modules cobalt-build/node_modules
 	ln -s /den-antares.com-scratch cobalt-build/scratch
-	#npm update
+	npm update
 
 watch:
 	while true; do \
