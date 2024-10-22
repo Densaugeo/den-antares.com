@@ -12,11 +12,11 @@ Passkeys are public-private keypairs designed for logging in to web sites.
 
 Passkeys are created when a user registers one on a web site. They're tied to the domain specified at registration, and aren't reused on different sites. When created, the public key is saved by the server for recognizing the user on future visits.
 
-The private key is saved by the client software. It may be saved in an OS cloud service and tied to the user's Microsoft/Apple/Google account, or it may be saved in a password manager (1Password advertises support, though I haven't tested that), or in a hardware key such as a Yubikey.
+The private key is saved by the client software. It may be saved in an OS cloud service and tied to the user's Microsoft/Apple/Google account, or it may be saved in a password manager (1Password advertises support, though I haven't tested it), or in a hardware key such as a Yubikey.
 
 On return visits, the client and server communicate to verify the authenticity of the private key. Depending on how a key was set up, the client may require the user to select from available keys or enter a PIN.
 
-Overall, when set up well, this can create a streamlined and secure login - visit page, tap on prompt / enter PIN, and you are logged in! No SMS codes, no begging users to install a password manager, and you don't have to store passwords!
+Overall, when set up well, this can create a streamlined and secure login - visit page, tap on prompt / enter PIN, and you are logged in! No SMS codes, no begging users to install a password manager, and you don't have to store passwords! Sounds good, but the bad news starts when you try to implement it...
 
 ## I Can't Find Any Good Tutorials!
 
@@ -24,7 +24,7 @@ If you've set up auth systems before, you're probably expecting a framework wher
 
 LOL.
 
-If you've rolled your own auth before, you might expect to look at a few tutorials or copy an example project.
+If you've built your own password auth before, you might expect to look at a few tutorials or copy an example project.
 
 LOL, again.
 
@@ -36,16 +36,18 @@ I wrote this article as a guide to the parts I've figured out, and I hope it hel
 
 I set up passkey auth for a small section of my personal site where my account is the only one, so I don't need a new user signup process. I don't need account recovery either, since I can always SSH into my server and reset stuff manually if I need to.
 
-I used the FastAPI Python framework on the backend (chosen mostly due to my familiarity with it), and web browser clients on the frontend. Since public keys are completely safe to publish and I only have a few of them, I just hardcoded my public keys into the server script.
+I used the FastAPI Python framework on the backend (chosen mostly due to my familiarity with it), and web browser clients on the frontend. Since public keys are completely safe to publish and I only have a few of them, I just hardcoded my public keys into the server script instead of dealing with a database.
 
 You can see the full code for this implementation in [its git repo](https://github.com/Densaugeo/tir-na-nog). This article is based on [this commit](https://github.com/Densaugeo/tir-na-nog/commit/c7ae004de8d6797ae4ce7fb98804da1577e390a0).
 
-## Stage 0: Imports and Stuff
+## Stage 0: Backend Library (Python)
 
-Obviously, to do something like this you're going to need libraries. Fortunately, you have options here:
+Obviously, to do something like this you're going to want a library. Fortunately, you have options here:
 - "py_webauthn" is an up-to-date webauthn library that you can easily install with <text style="color:#8f8">`python -m pip install webauthn`</text>.
 - "Python WebAuthN" is an unmaintained library you should not use. It is installed by running <text style="color:#f88">`python -m pip install py-webauthn`</text>.
 - Make sure you don't accidentally run <text style="color:#f88">`python -m pip install py-webauthn`</text> when trying to install py_webauthn - always use <text style="color:#8f8">`python -m pip install webauthn`</text>!
+
+It's probably not *that* hard to handle passkeys without a backend library, but you'd need to handle specialized passkey messages that are probably some sort of struct packed into a binary buffer with some cryptographic signatures. That's not convenient in either Python or Javascript, but this is one of the few bits of passkey handling that a library can currently do for you, so take advantage.
 
 ## Stage 1: Challenge
 
@@ -109,7 +111,7 @@ The relying party ID is your domain name. In passkey terminology, "relying party
 - [MDN documentation](https://developer.mozilla.org/en-US/docs/Web/API/PublicKeyCredentialCreationOptions) doesn't even mention `rpId` any more, even though it's still required.
 - Most passkey guides only mention one or the other of these, but not both.
 
-The user ID in its various forms is mainly for clients to show to users when selecting between different keys, which I've left as a placeholder here because there's only one user account on my personal site. For a real implementation, you'd want to put username or e-mail or something like that in.
+The user ID in its various forms is mainly for clients to show to users when selecting between different keys, which I've left as a placeholder here because there's only one user account on my personal site. For a real implementation, you'd want to use a username or e-mail or something like that.
 
 This is also where you choose between resident and non-resident keys. This is discussed in detail in a later section, but for most applciations I recommend using the default (non-resident).
 
@@ -118,6 +120,9 @@ This is also where you choose between resident and non-resident keys. This is di
 The data from the newly created credential needs to be sent to the server. The only trick here is making sure all the necessary fields get included and binary buffers are encoded for transmission.
 
 ```javascript
+const domain = location.hostname === 'localhost' ? 'localhost' :
+  'den-antares.com'
+
 const registration = await fetch_json('/api/register-key', {
   method: 'POST',
   body: JSON.stringify({
@@ -183,7 +188,7 @@ The RP ID has two possible values (one for test and one for production).
 
 ## Stage 4: Public Key Storage
 
-Normally the credential ID and public key would be saved in a DB here, but this a small site with one user account so I don't have a DB. Instead I have the registration function return them in a JSON response, display them in a `<p>` tag, and then copy paste the values into a hardcoded list of accepted keys:
+Normally the credential ID and public key would be saved in a DB here, but this is a small site with one user account so I don't have a DB. Instead I have the registration function return them in a JSON response, display them in a `<p>` tag, and then copy paste the values into a hardcoded list of accepted keys:
 
 ```python
 @dataclasses.dataclass
@@ -212,9 +217,12 @@ After a passkey is registered, you can use it for logins. Logging in starts with
 
 ## Stage 6: Credential Checking
 
-To prove identity, the client needs to sign a message which includes the random challenge with the passkey's private key. Since the private key is stored elsewhere, the client needs to talk to the OS, password manage, hardware key, or whatever device the key is stored on. This is done with `navigator.credentials.get`.
+To prove identity, the client needs to sign a message which includes the random challenge with the passkey's private key. Since the private key is stored elsewhere, the client needs to talk to the OS, password manager, hardware key, or whatever device the key is stored on. This is done with `navigator.credentials.get`.
 
 ```javascript
+const domain = location.hostname === 'localhost' ? 'localhost' :
+  'den-antares.com'
+
 const credential = await navigator.credentials.get({
   publicKey: {
     challenge: b64_to_u8_array(challenge.challenge),
@@ -231,7 +239,7 @@ const credential = await navigator.credentials.get({
 })
 ```
 
-This is also where that `allowCredentials` field return by the challenge endpoint is used: `navigator.credentials.get` uses if to check which stored passkeys can be used. For a serious login system, you'd need to send the list of credentials associated with a user, but with only account that's a lot simpler.
+This is also where that `allowCredentials` field return by the challenge endpoint is used: `navigator.credentials.get` uses it to check which stored passkeys can be used. For a serious login system, you'd need to send the list of credentials associated with a user, but with only account that's a lot simpler.
 
 ## Stage 7: Authentication
 
@@ -315,11 +323,11 @@ async def post_api_login(request: Request):
     return res
 ```
 
-Once the loging is verified, the server can generate a token for use in future requests.
+Once the login is verified, the server can generate a token for use in future requests.
 
 ## Resident vs. Non-Resident Keys
 
-Passkeys can be resident or non-resident. (Some passkey purists will tell you that only one or the other counts as a true "passkey" and the other is really just a credential or something, but I am not really interested in those debates).
+Passkeys can be resident or non-resident. (Some passkey purists will tell you that only one or the other counts as a true "passkey" and the other is really just a credential or something, but I'm not interested in those debates).
 
 A resident passkey is the simpler case to understand: A new private key is generated and stored by the OS, password manager, or hardware key.
 
@@ -331,7 +339,7 @@ Another difference is discoverability. Resident passkeys are sometimes referred 
 
 A final difference is that in my testing, resident keys usually also require the user to enter a PIN whenever logging in. This requirement is especially burdensome for Yubikeys, because the only mechanism for requiring a PIN on a Yubikey makes it required for **all** use of that Yubikey, even for using it with unrelated web sites.
 
-Despite the usability issues with resident passkeys, it may still be worth using them if you are using passkeys alone with no password, **and** physical key theft is a concern for your users. Otherwise, I recommend sticking with non-resident passkeys until the storage and PIN usability issues are sorted out.
+Despite the usability issues with resident passkeys, it may still be worth using them if you are using passkeys alone with no password, **and** physical device or key theft is a concern for your users. Otherwise, I recommend sticking with non-resident passkeys until the storage and PIN usability issues are sorted out.
 
 If resident passkeys are necessary for your application, they can be created by supplying the approriate options to `navigator.credentials.create()`, [documented on MDN](https://developer.mozilla.org/en-US/docs/Web/API/PublicKeyCredentialCreationOptions).
 
@@ -361,18 +369,18 @@ Not a complete list, of course.
 
 Passkeys are new and still have many kinks. Even when they work correctly, most users aren't familiar with them. Any serious passkey deployment must have an alternate login option - I recommend e-mail or social login, since one of the biggest advantages of passkeys is not having to store passwords.
 
-I've also found that many of the failure modes of passkeys can be avoided by using a Yubikey, rather than the built-in OS passkeys. The main caveat is that regular users are not going to buy Yubikeys.
+I've also found that many of the failure modes of passkeys can be avoided by using a Yubikey, rather than the built-in OS passkeys. The main caveat is that regular users are not going to buy Yubikeys (fortunately not a concern for this small test site).
 
 ## Quality Level of Passkey APIs
 
-While implementing passkeys I ran into a long list of quality issues:
-- The [best existing tutorial I found](https://gist.github.com/samuelcolvin/3ff019aa738aa558a185c4fb002b5751) doesn't work any more.
+While implementing passkeys I ran into some concerning quality issues:
+- The [best existing example I found](https://gist.github.com/samuelcolvin/3ff019aa738aa558a185c4fb002b5751) doesn't work any more.
 - In Firefox, there is a [known bug](https://stackoverflow.com/questions/62717941/why-navigator-credentials-get-function-not-working-in-firefox-addon) which prevents `navigator.credentials.get()` from working when run from the browser console. The [Bugzilla](https://bugzilla.mozilla.org/show_bug.cgi?id=1479500) [issues](https://bugzilla.mozilla.org/show_bug.cgi?id=1448408) for it were closed years ago but the bug is still there.
 - The RP ID must be supplied to `navigator.credentials.create()` using two different formats, one of which is not listed in the [MDN documentation](https://developer.mozilla.org/en-US/docs/Web/API/PublicKeyCredentialCreationOptions).
   * Note that the "old way" which is currently deprecated-but-still-required wasn't vendor-prefixed. It was an actual web standard.
 - Like many security technologies, passkeys are [hostile to testing](https://www.reddit.com/r/webdev/comments/1epstuv/is_it_possible_to_set_up_a_test_server_for_a/).
 
-I don't know what's going inside the organizations behind passkeys, but based on what I can see of the state of documentation and bug fixes, I'm not convinced they can create robust security tools. Will a team that leaves obvious bugs unfixed for years be able to keep up with security fixes? Will companies that publish new security tools with no documentation or examples be careful of how their tools interact with real users in the wild?
+I don't know what's going on inside the organizations behind passkeys, but based on what I can see of the state of documentation and bug fixes, I'm not convinced they can create robust security tools. Will a team that leaves obvious bugs unfixed for years be able to keep up with security fixes? Will companies that publish new security tools with no documentation or examples be careful of how their tools interact with real users in the wild?
 
 Passkeys are useful for smaller use cases where you don't want to take on the risks of storing passwords, but I can't recommend them for anything high-security until the serious quality issues in passkey APIs are addressed.
 
@@ -407,11 +415,11 @@ The Very Bad:
 - Breaking changes in the relevant W3C standards.
 - Core passkey components like OS and browser support have a concerning number of bugs.
 
-They're definitely a mixed bag, but I expect to use passkeys more in the future because they are a great fit for custom web services with single-digit user counts, which I find myself maintaining frequently.
+They're definitely a mixed bag, but I expect to use passkeys more in the future because they are a great fit for custom web services with single-digit user counts, which I find myself building frequently.
 
 For low- or medium-security sites with higher user counts, they can be used today as a convenient login option security-savvy users, but aren't going to work well as a primary login method for most users.
 
-For high security sites, passkeys should not be used until implementations have matured significantly and quality issues have been addresses.
+For high security sites, passkeys should not be used until implementations have matured significantly and quality issues have been addressed.
 
 ## Sources
 
@@ -423,7 +431,7 @@ MDN documentation for `navigator.credentials.create()` options: <https://develop
 
 Reddit thread on setting up tests for passkey sites: <https://www.reddit.com/r/webdev/comments/1epstuv/is_it_possible_to_set_up_a_test_server_for_a/>.
 
-Best existing passkey tutorial: <https://gist.github.com/samuelcolvin/3ff019aa738aa558a185c4fb002b5751>.
+Best existing passkey example: <https://gist.github.com/samuelcolvin/3ff019aa738aa558a185c4fb002b5751>.
 
 Stack Overflow thread on Firefox's WebAuthn console bug: <https://stackoverflow.com/questions/62717941/why-navigator-credentials-get-function-not-working-in-firefox-addon>.
 
