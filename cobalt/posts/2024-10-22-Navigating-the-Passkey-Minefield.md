@@ -2,8 +2,14 @@
 title: Navigating the Passkey Minefield
 published_date: 2024-10-22 00:50:00.801888762 +0000
 layout: post.liquid
+excerpt_separator: <!-- END EXERPT -->
 is_draft: false
 ---
+<figure>
+  <img src="/pics/navigating-the-passkey-minefield.webp"></img>
+  <figcaption>How I felt taking on the passkey minefield. This pic might have some rough edges like AI text artifacts, but that just makes it more appropriate for an article about passkeys!<figcaption>
+</figure>
+
 If you've ever used SSH keys to log into a remote shell and thought "This is so simple and easy, and private keys never have to be transmitted thanks to public key cryptography! Why don't we use this for logging into everything?" you're in luck: you can now set up your web site to accept logins based on public key cryptography and **never have to store passwords**. Unfortunately, the "simple and easy" part is a work in progress. Hence, the minefield.
 
 ## What's a "Passkey"?
@@ -17,6 +23,8 @@ The private key is saved by the client software. It may be saved in an OS cloud 
 On return visits, the client and server communicate to verify the authenticity of the private key. Depending on how a key was set up, the client may require the user to select from available keys or enter a PIN.
 
 Overall, when set up well, this can create a streamlined and secure login - visit page, tap on prompt / enter PIN, and you are logged in! No SMS codes, no begging users to install a password manager, and you don't have to store passwords! Sounds good, but the bad news starts when you try to implement it...
+
+<!-- END EXERPT -->
 
 ## I Can't Find Any Good Tutorials!
 

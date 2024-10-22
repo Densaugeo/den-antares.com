@@ -16,12 +16,20 @@ title: Den Antares
   </text>
   <div class="button_panel_body">
     <!-- post.tags -->
-    {{ post.excerpt }}
+    {% if post.excerpt != "" %}
+      {{ post.excerpt }}
+    {% else %}
+      {{ post.content }}
+    {% endif %}
+
     <!-- For edge cases involving document flow around floated elements -->
     <div style="clear: both;"></div>
-    <a href="/{{ post.permalink }}">Continue reading...</a>
-    <!-- So border is properly spaced below continue reading... link -->
-    <div></div>
+
+    {% if post.excerpt != "" %}
+      <a href="/{{ post.permalink }}">Continue...</a>
+      <!-- So border is properly spaced below continue... link -->
+      <div></div>
+    {% endif %}
   </div>
 </div>
 {% endfor %}
