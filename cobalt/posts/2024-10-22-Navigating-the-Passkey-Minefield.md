@@ -6,7 +6,7 @@ excerpt_separator: <!-- END EXERPT -->
 is_draft: false
 ---
 <figure>
-  <img src="/pics/navigating-the-passkey-minefield.webp"></img>
+  <img src="/pics/navigating-the-passkey-minefield-smaller.webp"></img>
   <figcaption>How I felt taking on the passkey minefield. This pic might have some rough edges like AI text artifacts, but that just makes it more appropriate for an article about passkeys!<figcaption>
 </figure>
 
