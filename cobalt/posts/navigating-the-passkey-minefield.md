@@ -10,7 +10,7 @@ If you've ever used SSH keys to log into a remote shell and thought "This is so 
 
 Passkeys are public-private keypairs designed for logging in to web sites.
 
-Passkeys are created when a user registers one on a web site. They are tied to the domain specified at registration, and aren't supposed to be reused on different sites. When created, the public key is saved by the server so it can recognize the user on future visits.
+Passkeys are created when a user registers one on a web site. They're tied to the domain specified at registration, and aren't reused on different sites. When created, the public key is saved by the server for recognizing the user on future visits.
 
 The private key is saved by the client software. It may be saved in an OS cloud service and tied to the user's Microsoft/Apple/Google account, or it may be saved in a password manager (1Password advertises support, though I haven't tested that), or in a hardware key such as a Yubikey.
 
@@ -36,9 +36,9 @@ I wrote this article as a guide to the parts I've figured out, and I hope it hel
 
 I set up passkey auth for a small section of my personal site where my account is the only one, so I don't need a new user signup process. I don't need account recovery either, since I can always SSH into my server and reset stuff manually if I need to.
 
-I used the FastAPI Python framework on the backend, and web browser clients on the frontend. Since public keys are completely safe to publish and I only have a few of them, I just hardcoded my public keys into the server script.
+I used the FastAPI Python framework on the backend (chosen mostly due to my familiarity with it), and web browser clients on the frontend. Since public keys are completely safe to publish and I only have a few of them, I just hardcoded my public keys into the server script.
 
-You can see the full code for this implementation in [its git repo](https://github.com/Densaugeo/tir-na-nog).
+You can see the full code for this implementation in [its git repo](https://github.com/Densaugeo/tir-na-nog). This article is based on [this commit](https://github.com/Densaugeo/tir-na-nog/commit/c7ae004de8d6797ae4ce7fb98804da1577e390a0).
 
 ## Stage 0: Imports and Stuff
 
@@ -367,14 +367,14 @@ I've also found that many of the failure modes of passkeys can be avoided by usi
 
 While implementing passkeys I ran into a long list of quality issues:
 - The [best existing tutorial I found](https://gist.github.com/samuelcolvin/3ff019aa738aa558a185c4fb002b5751) doesn't work any more.
-- In Firefox, there is a [known bug](https://stackoverflow.com/questions/62717941/why-navigator-credentials-get-function-not-working-in-firefox-addon) which prevents `navigator.credentials.get()` from working when run from the browser console. The [Bugzilla](https://bugzilla.mozilla.org/show_bug.cgi?id=1479500) [reports](https://bugzilla.mozilla.org/show_bug.cgi?id=1448408) for it were closed years ago but the bug is still there.
+- In Firefox, there is a [known bug](https://stackoverflow.com/questions/62717941/why-navigator-credentials-get-function-not-working-in-firefox-addon) which prevents `navigator.credentials.get()` from working when run from the browser console. The [Bugzilla](https://bugzilla.mozilla.org/show_bug.cgi?id=1479500) [issues](https://bugzilla.mozilla.org/show_bug.cgi?id=1448408) for it were closed years ago but the bug is still there.
 - The RP ID must be supplied to `navigator.credentials.create()` using two different formats, one of which is not listed in the [MDN documentation](https://developer.mozilla.org/en-US/docs/Web/API/PublicKeyCredentialCreationOptions).
   * Note that the "old way" which is currently deprecated-but-still-required wasn't vendor-prefixed. It was an actual web standard.
 - Like many security technologies, passkeys are [hostile to testing](https://www.reddit.com/r/webdev/comments/1epstuv/is_it_possible_to_set_up_a_test_server_for_a/).
 
-I don't know what's going inside the organizations behind passkeys, but based on what I can see of the state of documentation and bug fixes, I'm not convinced they can create robust security tools. Will a team that leaves obvious bugs like being completely unable to call key functions from the browser console unfixed for years be able to keep up with security fixes? Will companies that publish new security tools with no documentation or examples consider how their tools operate in the real world?
+I don't know what's going inside the organizations behind passkeys, but based on what I can see of the state of documentation and bug fixes, I'm not convinced they can create robust security tools. Will a team that leaves obvious bugs unfixed for years be able to keep up with security fixes? Will companies that publish new security tools with no documentation or examples be careful of how their tools interact with real users in the wild?
 
-Passkeys are useful for smaller use cases where you don't want to take on the risks of storing passwords, but I can't reocmmend them for anything high-security until the serious quality issues in passkey APIs are addressed.
+Passkeys are useful for smaller use cases where you don't want to take on the risks of storing passwords, but I can't recommend them for anything high-security until the serious quality issues in passkey APIs are addressed.
 
 ## Web Standards Aren't Forever Any More
 
@@ -399,9 +399,10 @@ The Bad:
 - There's a LOT of edges cases that aren't handled well.
 - Passkeys aren't going to work for every user.
 - Resident passkeys suffer from usability problems, especially when using hardware keys.
+- Testing passkeys on mobile is excessively complicated.
 - Libraries are in flux, and you need to figure a lot of stuff out yourself.
 
-The Extra Bad:
+The Very Bad:
 
 - Breaking changes in the relevant W3C standards.
 - Core passkey components like OS and browser support have a concerning number of bugs.
@@ -413,3 +414,23 @@ For low- or medium-security sites with higher user counts, they can be used toda
 For high security sites, passkeys should not be used until implementations have matured significantly and quality issues have been addresses.
 
 ## Sources
+
+Git repo where I used passkeys: <https://github.com/Densaugeo/tir-na-nog>.
+
+Git commit this article is based on: <https://github.com/Densaugeo/tir-na-nog/commit/c7ae004de8d6797ae4ce7fb98804da1577e390a0>.
+
+MDN documentation for `navigator.credentials.create()` options: <https://developer.mozilla.org/en-US/docs/Web/API/PublicKeyCredentialCreationOptions>.
+
+Reddit thread on setting up tests for passkey sites: <https://www.reddit.com/r/webdev/comments/1epstuv/is_it_possible_to_set_up_a_test_server_for_a/>.
+
+Best existing passkey tutorial: <https://gist.github.com/samuelcolvin/3ff019aa738aa558a185c4fb002b5751>.
+
+Stack Overflow thread on Firefox's WebAuthn console bug: <https://stackoverflow.com/questions/62717941/why-navigator-credentials-get-function-not-working-in-firefox-addon>.
+
+Bugzilla issue on WebAuthn console bug: <https://bugzilla.mozilla.org/show_bug.cgi?id=1479500>.
+
+Bugzilla issue on attempted fix for WebAuthn console bug: <https://bugzilla.mozilla.org/show_bug.cgi?id=1448408>.
+
+Mozilla announcement of `SharedArrayBuffer` removal: <https://blog.mozilla.org/security/2018/01/03/mitigations-landing-new-class-timing-attack/>.
+
+Discussion of changes to `SharedArrayBuffer` standard: <https://github.com/tc39/ecma262/issues/1435>.
