@@ -45,6 +45,7 @@ test.pem:
 		-nodes -sha256 -subj '/CN=test' -days 10000
 
 deploy:
+	ssh den-antares.com "cd /den-antares.com && git reset --hard HEAD"
 	ssh den-antares.com "cd /den-antares.com && git pull"
 	ssh den-antares.com "cd /den-antares.com && make build"
 
