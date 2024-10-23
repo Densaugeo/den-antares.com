@@ -1,5 +1,5 @@
 install-dev:
-	sudo dnf install inotify-tools
+	sudo dnf install inotify-tools goaccess
 	cargo install cobalt-bin
 	npm install
 	python -m pip install reloadserver
@@ -48,6 +48,10 @@ deploy:
 	ssh den-antares.com "cd /den-antares.com && git pull"
 	ssh den-antares.com "cd /den-antares.com && make build"
 
+check-access-log:
+	scp den-antares.com:/var/lib/caddy/access.log .
+	goaccess --log-format=CADDY access.log
+
 clean:
 	cobalt clean
-	rm test.pem
+	rm test.pem access.log

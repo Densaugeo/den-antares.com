@@ -11,7 +11,11 @@
 }
 
 den-antares.com {
-  file_server browse {
-    root /den-antares.com/cobalt-build
-  }
+	file_server browse {
+		root /den-antares.com/cobalt-build
+	}
+
+	log {
+		output file /var/lib/caddy/access.log
+	}
 }
