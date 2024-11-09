@@ -9,7 +9,7 @@ In a fit of insanity, you decide to get a tech job. After some searching you fin
 
 ---
 
-"I'm thinking we'll start you out taking care of the zebra. That'll be a good way for you to get up to speed and learn how we do things."
+"I'm thinking we'll start you out taking care of the zebra," the manager said. "That'll be a good way for you to get up to speed and learn how we do things."
 
 "The zebra?" you ask.
 
@@ -19,17 +19,19 @@ In a fit of insanity, you decide to get a tech job. After some searching you fin
 
 "What? The zebra. You know, a zebra."
 
-"Of course! A zebra," you answer, understanding this must be a technical term everyone is expected know already.
+"Of course! A zebra," you answer, understanding this must be a technical term everyone is expected to know already.
 
 The manager leads you past the accounting desks, the customer service desks, a prestigious cubicle for a director, the IT desks, and finally into the datacenter. There's rows of tall black cabinets full of equipment, but the manager continues past them, leading you to a room near the back.
 
-He opens the door and you follow, finding yourself facing a zebra, black and white stripes and all. Straw covers the floor, feed and water troughs are visible along one wall, and another features a double-door open to a yard.
+He opens the door and you follow, finding yourself facing a zebra, black and white stripes and all. Straw covers the floor, feed and water troughs are visible along one wall, and another features a double door open to a yard.
 
 "Meet Zarzoni, our zebra," the manager introduces you, before launching into an explanation of feeding schedules.
 
 ---
 
-As the weeks go by, you settle in. Zarzoni seems to be a friendly zebra (he lets you pet him at least), the paychecks arrive on time, and none of your friends can say their company has a zebra. However, you eventually begin to have questions...
+**The next day**
+
+You start settling in. Zarzoni seems to be a friendly zebra (he lets you pet him at least), you get a desk not far from the zebra pen, and none of your friends can say their company has a zebra. However, you begin to have questions...
 
 ---
 
