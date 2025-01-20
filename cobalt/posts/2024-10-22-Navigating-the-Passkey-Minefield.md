@@ -7,7 +7,7 @@ is_draft: false
 ---
 <figure>
   <img src="/pics/navigating-the-passkey-minefield-smaller.webp"></img>
-  <figcaption>How I felt taking on the passkey minefield. This pic might have some AI text artifacts, but passkeys have rough edges to so it fits!<figcaption>
+  <figcaption>How I felt taking on the passkey minefield. This pic might have some AI text artifacts, but passkeys have rough edges too so it fits!<figcaption>
 </figure>
 
 If you've ever used SSH keys to log into a remote shell and thought "This is so simple and easy, and private keys never have to be transmitted thanks to public key cryptography! Why don't we use this for logging into everything?" you're in luck: you can now set up your web site to accept logins based on public key cryptography and **never have to store passwords**. Unfortunately, the "simple and easy" part is a work in progress. Hence, the minefield.

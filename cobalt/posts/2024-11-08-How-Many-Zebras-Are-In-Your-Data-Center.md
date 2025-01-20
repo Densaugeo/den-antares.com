@@ -2,7 +2,7 @@
 title: How Many Zebras Are In Your Data Center?
 published_date: 2024-11-08 19:52:00 +0000
 layout: post.liquid
-excerpt: ""
+excerpt_separator: <!-- END EXERPT -->
 is_draft: false
 ---
 In a fit of insanity, you decide to get a tech job. After some searching you find a company desperate enough to hire someone with no experience.
@@ -26,6 +26,8 @@ The manager leads you past the accounting desks, the customer service desks, a p
 He opens the door and you follow, finding yourself facing a zebra, black and white stripes and all. Straw covers the floor, feed and water troughs are visible along one wall, and another features a double door open to a yard.
 
 "Meet Zarzoni, our zebra," the manager introduces you, before launching into an explanation of feeding schedules.
+
+<!-- END EXERPT -->
 
 ---
 
