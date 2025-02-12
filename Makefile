@@ -1,3 +1,6 @@
+# If no date is given, date -d defaults to the start of the current day
+DATE_TS=$(shell date -d '$(DATE)' '+%s')
+
 install-dev:
 	sudo dnf install inotify-tools goaccess
 	cargo install cobalt-bin
@@ -49,9 +52,20 @@ deploy:
 	ssh den-antares.com "cd /den-antares.com && git pull"
 	ssh den-antares.com "cd /den-antares.com && make build"
 
-check-access-log:
-	scp den-antares.com:/var/lib/caddy/access.log .
+# If no date is given, date -d defaults to the start of the current day
+DATE_TS=$(shell date -d '$(DATE)' '+%s')
+
+check-access-log: access.log
+ifdef DATE
+	cat access.log | \
+	jq -c "select(.ts >= $(DATE_TS) and .ts < $(DATE_TS) + 86400)" | \
+	goaccess --log-format=CADDY
+else
 	goaccess --log-format=CADDY access.log
+endif
+
+access.log:
+	scp den-antares.com:/var/lib/caddy/access.log .
 
 clean:
 	cobalt clean
