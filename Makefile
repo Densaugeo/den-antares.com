@@ -52,9 +52,6 @@ deploy:
 	ssh den-antares.com "cd /den-antares.com && git pull"
 	ssh den-antares.com "cd /den-antares.com && make build"
 
-# If no date is given, date -d defaults to the start of the current day
-DATE_TS=$(shell date -d '$(DATE)' '+%s')
-
 check-access-log: access.log
 ifdef DATE
 	cat access.log | \
