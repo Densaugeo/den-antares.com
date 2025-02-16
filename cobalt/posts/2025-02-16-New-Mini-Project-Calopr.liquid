@@ -1,0 +1,19 @@
+---
+title: "New Mini Project: Calopr"
+published_date: 2025-02-16 17:00:00 -0500
+layout: post.liquid
+excerpt: ""
+is_draft: false
+---
+<figure>
+  <img src="/pics/calopr-screen.webp"></img>
+  <figcaption>Caddy access logs, but human-readable and colorized<figcaption>
+</figure>
+
+<p>While checking the logs on a Caddy server I asked "Why can't I see a simple, easy to get to access log like FastAPI has?" So I made a tool to turn Caddy's JSON access logs into something easier to read.</p>
+
+<p>It's a very simple design: Read JSON from stdin, write pretty-printed logs to stdout. No command line arguments or options, just a binary and pipes/redirects. For anyone interested the development process, I posted <a href="https://bsky.app/profile/den-antares.bsky.social/post/3liar2km45s2f">a Bluesky thread</a> while working on it.</p>
+
+<p>This is the first time I've published a project as a binary (outside of work) so no packages yet...just Linux binaries on GitHub releases. Cross-compiling looks harder than I thought so I don't think I'll set that up unless I find a need for it.</p>
+
+<p>Code + downloads are available on <a href="https://github.com/Densaugeo/calopr">GitHub</a>. Due to recent events in the US I am feeling less friendly towards corporate types and have opted for GPL licensing on this project, rather than the MIT license I normally use on small projects. I am also wondering exactly how much of a headache it would be to move away from GitHub...</p>
