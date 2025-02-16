@@ -1,6 +1,6 @@
 ---
 title: Navigating the Passkey Minefield
-published_date: 2024-10-22 00:50:00.801888762 +0000
+published_date: 2024-10-22 00:50:00.801888762 -0500
 layout: post.liquid
 excerpt_separator: <!-- END EXERPT -->
 is_draft: false

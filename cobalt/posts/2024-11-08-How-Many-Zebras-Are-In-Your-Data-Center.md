@@ -1,6 +1,6 @@
 ---
 title: How Many Zebras Are In Your Data Center?
-published_date: 2024-11-08 19:52:00 +0000
+published_date: 2024-11-08 19:52:00 -0500
 layout: post.liquid
 excerpt_separator: <!-- END EXERPT -->
 is_draft: false
